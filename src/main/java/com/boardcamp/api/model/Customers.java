@@ -18,6 +18,10 @@ public class Customers {
 
     private String birthday;
 
+    public long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }

@@ -6,7 +6,6 @@ public class GamesDto {
 
     private long id;
     private String name;
-
     private String image;
     private Integer stockTotal;
     private Integer category_set_id;
