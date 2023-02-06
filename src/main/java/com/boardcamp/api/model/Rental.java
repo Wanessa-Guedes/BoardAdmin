@@ -10,9 +10,12 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private LocalDate rentDate;
+    @Column(nullable = false)
     private Integer daysRented;
     private LocalDate returnDate;
+    @Column(nullable = false)
     private Float originalPrice;
     private Float delayFee;
 

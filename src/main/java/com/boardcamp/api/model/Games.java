@@ -10,14 +10,18 @@ public class Games {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String name;
 
     private String image;
 
+    @Column(nullable = false)
     private Integer stockTotal;
 
+    @Column(nullable = false)
     private Float pricePerDay;
 
+    @Column(nullable = false)
     private Integer category_set_id;
 
     @ManyToOne

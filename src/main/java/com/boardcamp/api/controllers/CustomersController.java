@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ public class CustomersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> PostCustomer(@RequestBody Customers req){
+    public ResponseEntity<Object> PostCustomer(@Valid @RequestBody Customers req){
         customersService.PostCustomers(req);
         return ResponseEntity.ok().build();
     }
@@ -36,7 +37,7 @@ public class CustomersController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> UpdateCustomer(@PathVariable(value="id") long id,
+    public ResponseEntity<Object> UpdateCustomer(@Valid @PathVariable(value="id") long id,
                                                     @RequestBody Customers req){
         Customers customers = customersService.FindById(id);
         if(customers != null){

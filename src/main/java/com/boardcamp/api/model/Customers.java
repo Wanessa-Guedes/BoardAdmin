@@ -11,10 +11,13 @@ public class Customers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true)
     private String phone;
 
+    @Column(nullable = false, unique = true)
     private String cpf;
 
     private LocalDate birthday;

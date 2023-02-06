@@ -12,6 +12,7 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Column(nullable = false)
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categories")
