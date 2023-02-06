@@ -1,13 +1,14 @@
 package com.boardcamp.api.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="customers")
 public class Customers {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String name;
@@ -16,7 +17,7 @@ public class Customers {
 
     private String cpf;
 
-    private String birthday;
+    private LocalDate birthday;
 
     public long getId() {
         return id;
@@ -46,11 +47,11 @@ public class Customers {
         this.cpf = cpf;
     }
 
-    public String getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(String birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 }

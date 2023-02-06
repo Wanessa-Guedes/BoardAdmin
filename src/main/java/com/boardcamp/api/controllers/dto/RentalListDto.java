@@ -1,29 +1,49 @@
-package com.boardcamp.api.model;
+package com.boardcamp.api.controllers.dto;
+
+import com.boardcamp.api.model.Customers;
+import com.boardcamp.api.model.Games;
+import com.boardcamp.api.model.Rental;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 
-@Entity
-@Table(name="rental")
-public class Rental {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+public class RentalListDto {
 
+
+    private long id;
     private LocalDate rentDate;
     private Integer daysRented;
     private LocalDate returnDate;
     private Float originalPrice;
     private Float delayFee;
 
-    // costumerId // gameId
-    @ManyToOne
-    @JoinColumn(name="customer_id", referencedColumnName = "id")
     private Customers customer;
 
-    @ManyToOne
-    @JoinColumn(name="game_id", referencedColumnName = "id")
-    private Games game;
+    private GamesDto gamesDto;
+
+    public RentalListDto() {
+    }
+
+    public RentalListDto(long id, LocalDate rentDate, Integer daysRented, LocalDate returnDate, Float originalPrice, Float delayFee, Customers customer) {
+        this.id = id;
+        this.rentDate = rentDate;
+        this.daysRented = daysRented;
+        this.returnDate = returnDate;
+        this.originalPrice = originalPrice;
+        this.delayFee = delayFee;
+        this.customer = customer;
+    }
+
+    public RentalListDto(Rental rental) {
+        this.id = rental.getId();
+        this.rentDate = rental.getRentDate();
+        this.daysRented = rental.getDaysRented();
+        this.returnDate = rental.getReturnDate();
+        this.originalPrice = rental.getOriginalPrice();
+        this.delayFee = rental.getDelayFee();
+        this.customer = rental.getCustomer();
+        this.gamesDto = new GamesDto(rental.getGame());
+    }
 
     public long getId() {
         return id;
@@ -77,11 +97,12 @@ public class Rental {
         this.customer = customer;
     }
 
-    public Games getGame() {
-        return game;
+    public GamesDto getGamesDto() {
+        return gamesDto;
     }
 
-    public void setGame(Games game) {
-        this.game = game;
+    public void setGamesDto(GamesDto gamesDto) {
+        this.gamesDto = gamesDto;
     }
+
 }
