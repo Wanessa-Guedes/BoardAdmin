@@ -1,6 +1,13 @@
 package com.boardcamp.api.model;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -11,15 +18,20 @@ public class Customers {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nome não pode estar em branco.")
     private String name;
 
-    @Column(nullable = false, unique = true)
+    @NotBlank(message = "Telefone não pode estar em branco.")
+    @Size(min=10, max=11)
     private String phone;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
+    @NotBlank(message = "CPF não pode estar em branco.")
+    @Size(min = 11, max = 11)
     private String cpf;
 
+    @DateTimeFormat
+    @NotNull
     private LocalDate birthday;
 
     public long getId() {

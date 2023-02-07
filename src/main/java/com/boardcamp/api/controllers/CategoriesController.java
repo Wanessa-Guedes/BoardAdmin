@@ -18,6 +18,12 @@ public class CategoriesController {
 
     @Autowired
     CategoriesService service;
+//    @GetMapping
+//    public ResponseEntity<List<CategoriesDto>> FindCategories(){
+//        List<CategoriesDto> categoriesDto = service.GetCategories();
+//        return ResponseEntity.ok().body(categoriesDto);
+//    }
+
     @GetMapping
     public ResponseEntity<List<CategoriesDto>> FindCategories(){
         List<CategoriesDto> categoriesDto = service.GetCategories();

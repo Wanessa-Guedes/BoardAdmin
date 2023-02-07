@@ -57,10 +57,13 @@ public class GamesService {
         if(data.getName() == null || data.getName().length() == 0 ){
             throw new ErrorHandler400("400", "Nome do jogo não pode estar vazio");
         }
-        if(data.getStockTotal() < 0 || data.getPricePerDay() < 0){
+        if(data.getStockTotal() <= 0 || data.getPricePerDay() <= 0){
             throw new ErrorHandler400("400", "stockTotal e pricePerDay precisam ser valores positivos");
         }
         Categories category = categoriesRepository.findById(data.getCategory_set_id());
+        if(category == null){
+            throw new ErrorHandler400("400", "Essa categoria não foi cadastrada ainda");
+        }
         return gamesRepository.save(data);
     }
 }

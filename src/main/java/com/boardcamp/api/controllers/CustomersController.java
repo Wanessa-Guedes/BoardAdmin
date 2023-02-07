@@ -1,5 +1,8 @@
 package com.boardcamp.api.controllers;
 
+import com.boardcamp.api.middleware.ErrorHandler400;
+import com.boardcamp.api.middleware.ErrorHandler404;
+import com.boardcamp.api.middleware.ErrorHandler409;
 import com.boardcamp.api.model.Customers;
 import com.boardcamp.api.repository.CustomersRepository;
 import com.boardcamp.api.services.CustomersService;
@@ -31,20 +34,25 @@ public class CustomersController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> PostCustomer(@Valid @RequestBody Customers req){
+    public ResponseEntity<Object> PostCustomer(@Valid @RequestBody Customers req) throws ErrorHandler409 {
         customersService.PostCustomers(req);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Customers> GetById(@PathVariable(value="id") long id){
+    public ResponseEntity<Customers> GetById(@PathVariable(value="id") long id) throws ErrorHandler404 {
         Customers customer = customersService.FindById(id);
         return ResponseEntity.ok().body(customer);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> UpdateCustomer(@Valid @PathVariable(value="id") long id,
-                                                    @RequestBody Customers req){
+                                                    @RequestBody Customers req) throws ErrorHandler404, ErrorHandler409, ErrorHandler400 {
+        if(req.getCpf().length() != 11 || req.getPhone().length() < 10
+                || req.getPhone().length() > 11 || req.getName() == null
+                || req.getName().length() == 0){
+            throw new ErrorHandler400("400", "Dados Inválidos");
+        }
         Customers customers = customersService.FindById(id);
         if(customers != null){
             customers.setName(req.getName());
@@ -55,6 +63,6 @@ public class CustomersController {
             return ResponseEntity.ok().build();
         }
 
-        return ResponseEntity.badRequest().build();
+        return null;
     }
 }

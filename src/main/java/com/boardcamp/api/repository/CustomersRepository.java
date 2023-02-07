@@ -9,4 +9,5 @@ import org.springframework.stereotype.Repository;
 public interface CustomersRepository extends JpaRepository<Customers, Long>, QuerydslPredicateExecutor<Customers> {
 
     Customers findById(long id);
+    Customers findByCpf(String cpf);
 }

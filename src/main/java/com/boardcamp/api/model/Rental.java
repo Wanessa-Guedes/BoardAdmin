@@ -1,6 +1,11 @@
 package com.boardcamp.api.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
 @Entity
@@ -10,12 +15,15 @@ public class Rental {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @DateTimeFormat
+    @NotNull
     private LocalDate rentDate;
-    @Column(nullable = false)
+
+    @NotNull(message = "DaysRented precisa ter valor." )
     private Integer daysRented;
     private LocalDate returnDate;
-    @Column(nullable = false)
+
+    @NotNull(message = "OriginalPrice precisa ter valor." )
     private Float originalPrice;
     private Float delayFee;
 

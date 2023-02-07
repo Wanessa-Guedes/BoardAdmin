@@ -1,6 +1,7 @@
 package com.boardcamp.api.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 
@@ -12,7 +13,7 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nome não pode estar em branco.")
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "categories")
