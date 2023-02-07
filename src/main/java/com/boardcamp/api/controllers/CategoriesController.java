@@ -1,11 +1,11 @@
 package com.boardcamp.api.controllers;
 
 import com.boardcamp.api.controllers.dto.CategoriesDto;
-import com.boardcamp.api.middleware.ErrorHandler;
+import com.boardcamp.api.middleware.ErrorHandler400;
+import com.boardcamp.api.middleware.ErrorHandler409;
 import com.boardcamp.api.model.Categories;
 import com.boardcamp.api.services.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,7 +25,7 @@ public class CategoriesController {
     }
 
     @PostMapping
-    public ResponseEntity<Categories> PostCategories(@Valid @RequestBody Categories req) throws ErrorHandler {
+    public ResponseEntity<Categories> PostCategories(@Valid @RequestBody Categories req) throws ErrorHandler400, ErrorHandler409 {
         service.PostCategories(req);
         return ResponseEntity.ok().build();
     }

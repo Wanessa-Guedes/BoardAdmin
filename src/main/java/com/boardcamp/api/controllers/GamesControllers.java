@@ -19,9 +19,15 @@ public class GamesControllers {
     @Autowired
     GamesService gamesService;
 
+//    @GetMapping
+//    public ResponseEntity<List<GamesDto>> GetAllGames(){
+//        List<GamesDto> games = gamesService.GetGames();
+//        return ResponseEntity.ok().body(games);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<GamesDto>> GetAllGames(){
-        List<GamesDto> games = gamesService.GetGames();
+    public ResponseEntity<List<GamesDto>> GetAllGames(@RequestParam(value="name", required = false) String name){
+        List<GamesDto> games = gamesService.GetGames(name);
         return ResponseEntity.ok().body(games);
     }
 

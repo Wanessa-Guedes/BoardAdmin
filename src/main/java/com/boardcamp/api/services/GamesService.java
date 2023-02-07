@@ -3,8 +3,10 @@ package com.boardcamp.api.services;
 import com.boardcamp.api.controllers.dto.GamesDto;
 import com.boardcamp.api.model.Categories;
 import com.boardcamp.api.model.Games;
+import com.boardcamp.api.model.QGames;
 import com.boardcamp.api.repository.CategoriesRepository;
 import com.boardcamp.api.repository.GamesRepository;
+import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,8 @@ public class GamesService {
     @Autowired
     CategoriesRepository categoriesRepository;
 
-    public List<GamesDto> GetGames(){
+    public List<GamesDto> GetGames(String name){
+    if(name == null) {
         List<Games> games = gamesRepository.findAll();
         List<GamesDto> gamesDto = new ArrayList<>();
         games.forEach(game -> gamesDto.add(new GamesDto(game)));
@@ -29,6 +32,19 @@ public class GamesService {
                         .findById(Long.valueOf(gameDto
                                 .getCategory_set_id())).get().getName())));
         return gamesDto;
+    }
+        QGames gamesDsl = QGames.games;
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(gamesDsl.name.containsIgnoreCase(name));
+        List<Games> games = (List<Games>) gamesRepository.findAll(builder);
+        List<GamesDto> gamesDto = new ArrayList<>();
+        games.forEach(game -> gamesDto.add(new GamesDto(game)));
+        gamesDto.forEach(gameDto -> gameDto
+                .setCategoryName(String.valueOf(categoriesRepository
+                        .findById(Long.valueOf(gameDto
+                                .getCategory_set_id())).get().getName())));
+        return gamesDto;
+
     }
 
     public Games PostGames(Games data){
