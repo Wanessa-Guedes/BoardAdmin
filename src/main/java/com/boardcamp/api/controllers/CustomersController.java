@@ -18,9 +18,15 @@ public class CustomersController {
     @Autowired
     CustomersService customersService;
 
+//    @GetMapping
+//    public ResponseEntity<List<Customers>> GetAllCustomers(){
+//        List<Customers> customers = customersService.GetCustomers();
+//        return ResponseEntity.ok().body(customers);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<Customers>> GetAllCustomers(){
-        List<Customers> customers = customersService.GetCustomers();
+    public ResponseEntity<List<Customers>> GetAllCustomers(@RequestParam(value = "cpf", required = false) String cpf){
+        List<Customers> customers = customersService.GetCustomers(cpf);
         return ResponseEntity.ok().body(customers);
     }
 

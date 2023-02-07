@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface GamesRepository extends JpaRepository<Games, Long>, QuerydslPredicateExecutor<Games> {
 
     Games findById(long id);
+
+    Games findByName(String name);
 }

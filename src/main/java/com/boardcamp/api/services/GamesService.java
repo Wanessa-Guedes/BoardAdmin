@@ -1,6 +1,8 @@
 package com.boardcamp.api.services;
 
 import com.boardcamp.api.controllers.dto.GamesDto;
+import com.boardcamp.api.middleware.ErrorHandler400;
+import com.boardcamp.api.middleware.ErrorHandler409;
 import com.boardcamp.api.model.Categories;
 import com.boardcamp.api.model.Games;
 import com.boardcamp.api.model.QGames;
@@ -47,7 +49,17 @@ public class GamesService {
 
     }
 
-    public Games PostGames(Games data){
+    public Games PostGames(Games data) throws ErrorHandler400, ErrorHandler409 {
+        Games game = gamesRepository.findByName(data.getName());
+        if(game != null){
+            throw new ErrorHandler409("409", "Já possui um jogo cadastrado com esse nome!");
+        }
+        if(data.getName() == null || data.getName().length() == 0 ){
+            throw new ErrorHandler400("400", "Nome do jogo não pode estar vazio");
+        }
+        if(data.getStockTotal() < 0 || data.getPricePerDay() < 0){
+            throw new ErrorHandler400("400", "stockTotal e pricePerDay precisam ser valores positivos");
+        }
         Categories category = categoriesRepository.findById(data.getCategory_set_id());
         return gamesRepository.save(data);
     }
