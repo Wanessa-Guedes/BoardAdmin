@@ -1,6 +1,9 @@
 package com.boardcamp.api.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="games")
@@ -10,18 +13,18 @@ public class Games {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotBlank(message = "Nome não pode estar em branco.")
     private String name;
 
     private String image;
 
-    @Column(nullable = false)
+    @NotNull(message = "StockTotal precisa ter valor." )
     private Integer stockTotal;
 
-    @Column(nullable = false)
+    @NotNull(message = "PricePerDay precisa ter valor." )
     private Float pricePerDay;
 
-    @Column(nullable = false)
+    @NotNull(message = "Category precisa ter valor." )
     private Integer category_set_id;
 
     @ManyToOne

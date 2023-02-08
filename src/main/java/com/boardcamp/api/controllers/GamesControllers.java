@@ -1,6 +1,8 @@
 package com.boardcamp.api.controllers;
 
 import com.boardcamp.api.controllers.dto.GamesDto;
+import com.boardcamp.api.middleware.ErrorHandler400;
+import com.boardcamp.api.middleware.ErrorHandler409;
 import com.boardcamp.api.model.Games;
 import com.boardcamp.api.services.CategoriesService;
 import com.boardcamp.api.services.GamesService;
@@ -19,14 +21,20 @@ public class GamesControllers {
     @Autowired
     GamesService gamesService;
 
+//    @GetMapping
+//    public ResponseEntity<List<GamesDto>> GetAllGames(){
+//        List<GamesDto> games = gamesService.GetGames();
+//        return ResponseEntity.ok().body(games);
+//    }
+
     @GetMapping
-    public ResponseEntity<List<GamesDto>> GetAllGames(){
-        List<GamesDto> games = gamesService.GetGames();
+    public ResponseEntity<List<GamesDto>> GetAllGames(@RequestParam(value="name", required = false) String name){
+        List<GamesDto> games = gamesService.GetGames(name);
         return ResponseEntity.ok().body(games);
     }
 
     @PostMapping
-    public ResponseEntity<Objects> PostGame(@Valid @RequestBody Games req){
+    public ResponseEntity<Objects> PostGame(@Valid @RequestBody Games req) throws ErrorHandler400, ErrorHandler409 {
          gamesService.PostGames(req);
          return ResponseEntity.ok().build();
     }
