@@ -78,16 +78,16 @@ public class RentalService {
     }
 
     public Rental PostRentalInfo(RentalDto data) throws ErrorHandler400 {
-        Customers customer = customersRepository.findById(data.getCustomerId()).get();
+        Customers customer = customersRepository.findById(data.getCustomerId()).orElse(null);
         if(customer == null){
             throw new ErrorHandler400("400", "Não existe usuário cadastrado com esse Id");
         }
-        Games game = gamesRepository.findById(data.getGameId()).get();
+        Games game = gamesRepository.findById(data.getGameId()).orElse(null);
         if(game == null){
             throw new ErrorHandler400("400", "Não existe jogo cadastrado com esse Id");
         }
-        if(data.getDaysRented() < 0){
-            throw new ErrorHandler400("400", "DaysRented precisa ser um número positivo");
+        if(data.getDaysRented() <= 0){
+            throw new ErrorHandler400("400", "DaysRented precisa ser maior do que zero");
         }
         if(game.getStockTotal() <= 0){
             throw new ErrorHandler400("400", "Não existem jogos desse tipo disponíveis no estoque");

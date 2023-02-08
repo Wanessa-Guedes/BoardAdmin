@@ -27,7 +27,7 @@ public class RentalController {
 
     @GetMapping
     public ResponseEntity<List<RentalListDto>> GetRentals(@RequestParam(value="customerId", required=false) Long customerId,
-                                                          @RequestParam(value="customerId", required=false) Long gameId){
+                                                          @RequestParam(value="gameId", required=false) Long gameId){
         List<RentalListDto> rentals = rentalService.GetRentalsInfos(customerId, gameId);
         return ResponseEntity.ok().body(rentals);
     }
