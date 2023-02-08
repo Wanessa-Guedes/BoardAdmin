@@ -28,8 +28,10 @@ public class GamesControllers {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<GamesDto>> GetAllGames(@RequestParam(value="name", required = false) String name){
-        List<GamesDto> games = gamesService.GetGames(name);
+    public ResponseEntity<List<GamesDto>> GetAllGames(@RequestParam(value="name", required = false) String name,
+                                                      @RequestParam(value="offset", required = false, defaultValue = "0") int offset,
+                                                      @RequestParam(value="limit", required = false, defaultValue = "5") int limit){
+        List<GamesDto> games = gamesService.GetGames(name, offset, limit);
         return ResponseEntity.ok().body(games);
     }
 

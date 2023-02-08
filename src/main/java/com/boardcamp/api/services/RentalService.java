@@ -14,6 +14,7 @@ import com.boardcamp.api.repository.GamesRepository;
 import com.boardcamp.api.repository.RentalRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -37,9 +38,9 @@ public class RentalService {
     @Autowired
     CategoriesRepository categoriesRepository;
 
-    public List<RentalListDto> GetRentalsInfos(Long customerId, Long gameId){
+    public List<RentalListDto> GetRentalsInfos(Long customerId, Long gameId, int offset, int limit){
         if(customerId == null && gameId == null){
-            List<Rental> rentals = rentalRepository.findAll();
+            List<Rental> rentals = rentalRepository.findAll(PageRequest.of(offset, limit)).getContent();
             List<RentalListDto> rentalListDtos = new ArrayList<>();
             rentals.forEach(rental -> rentalListDtos.add(new RentalListDto(rental)));
             rentalListDtos.forEach(rentalDto -> rentalDto.getGamesDto()
@@ -48,12 +49,12 @@ public class RentalService {
                                     .getCategory_set_id())).get().getName())));
             return rentalListDtos;
         }
-        QRental rentalDsl = QRental.rental;
-        BooleanBuilder builder = new BooleanBuilder();
+//        QRental rentalDsl = QRental.rental;
+//        BooleanBuilder builder = new BooleanBuilder();
         if(customerId != null){
-            builder.and(rentalDsl.customer.id.in(customerId));
-
-            List<Rental> rentals = (List<Rental>) rentalRepository.findAll(builder);
+//            builder.and(rentalDsl.customer.id.in(customerId));
+            //List<Rental> rentals = (List<Rental>) rentalRepository.findAll(builder);
+            List<Rental> rentals = rentalRepository.findAllByCustomerId(customerId, PageRequest.of(offset, limit)).getContent();
             List<RentalListDto> rentalListDtos = new ArrayList<>();
             rentals.forEach(rental -> rentalListDtos.add(new RentalListDto(rental)));
             rentalListDtos.forEach(rentalDto -> rentalDto.getGamesDto()
@@ -62,9 +63,10 @@ public class RentalService {
                                     .getCategory_set_id())).get().getName())));
             return rentalListDtos;
         } else {
-            builder.and(rentalDsl.game.id.in(gameId));
+//            builder.and(rentalDsl.game.id.in(gameId));
 
-            List<Rental> rentals = (List<Rental>) rentalRepository.findAll(builder);
+//            List<Rental> rentals = (List<Rental>) rentalRepository.findAll(builder);
+            List<Rental> rentals = rentalRepository.findAllByGameId(gameId, PageRequest.of(offset, limit)).getContent();
             List<RentalListDto> rentalListDtos = new ArrayList<>();
             rentals.forEach(rental -> rentalListDtos.add(new RentalListDto(rental)));
             rentalListDtos.forEach(rentalDto -> rentalDto.getGamesDto()

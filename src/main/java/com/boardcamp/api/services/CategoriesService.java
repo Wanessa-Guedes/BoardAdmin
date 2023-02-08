@@ -6,6 +6,9 @@ import com.boardcamp.api.middleware.ErrorHandler409;
 import com.boardcamp.api.model.Categories;
 import com.boardcamp.api.repository.CategoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +20,18 @@ public class CategoriesService {
     @Autowired
     private CategoriesRepository repository;
 
-    public List<CategoriesDto> GetCategories(){
-        List<Categories> categories = repository.findAll();
+//    public List<CategoriesDto> GetCategories(){
+//        List<Categories> categories = repository.findAll();
+//        List<CategoriesDto> categoriesDto = new ArrayList<>();
+//        categories.forEach(categorie -> categoriesDto.add(new CategoriesDto(categorie)));
+//        return categoriesDto;
+//    }
+
+    public List<CategoriesDto> GetCategories(int offset, int limit){
+        Page<Categories> offCategories = repository.findAll(PageRequest.of(offset, limit));
+        //List<Categories> categories = repository.findAll();
         List<CategoriesDto> categoriesDto = new ArrayList<>();
-        categories.forEach(categorie -> categoriesDto.add(new CategoriesDto(categorie)));
+        offCategories.forEach(categorie -> categoriesDto.add(new CategoriesDto(categorie)));
         return categoriesDto;
     }
 

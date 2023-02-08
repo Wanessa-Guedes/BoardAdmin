@@ -7,6 +7,7 @@ import com.boardcamp.api.model.Customers;
 import com.boardcamp.api.repository.CustomersRepository;
 import com.boardcamp.api.services.CustomersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +29,10 @@ public class CustomersController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<Customers>> GetAllCustomers(@RequestParam(value = "cpf", required = false) String cpf){
-        List<Customers> customers = customersService.GetCustomers(cpf);
+    public ResponseEntity<List<Customers>> GetAllCustomers(@RequestParam(value = "cpf", required = false) String cpf,
+                                                           @RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                                                           @RequestParam(value = "limit", required = false, defaultValue = "5") int limit){
+        List<Customers> customers = customersService.GetCustomers(cpf, offset, limit);
         return ResponseEntity.ok().body(customers);
     }
 

@@ -25,8 +25,9 @@ public class CategoriesController {
 //    }
 
     @GetMapping
-    public ResponseEntity<List<CategoriesDto>> FindCategories(){
-        List<CategoriesDto> categoriesDto = service.GetCategories();
+    public ResponseEntity<List<CategoriesDto>> FindCategories(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                                                              @RequestParam(value = "limit", required = false, defaultValue = "5") int limit){
+        List<CategoriesDto> categoriesDto = service.GetCategories(offset, limit);
         return ResponseEntity.ok().body(categoriesDto);
     }
 

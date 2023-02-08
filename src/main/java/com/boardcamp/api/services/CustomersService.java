@@ -6,7 +6,10 @@ import com.boardcamp.api.model.Customers;
 import com.boardcamp.api.model.QCustomers;
 import com.boardcamp.api.repository.CustomersRepository;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.jpa.impl.JPAQuery;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +20,12 @@ public class CustomersService {
     @Autowired
     CustomersRepository customersRepository;
 
-    public List<Customers> GetCustomers(String cpf){
+    public List<Customers> GetCustomers(String cpf, int offset, int limit){
         if(cpf == null){
-            return customersRepository.findAll();
+            return customersRepository.findAll(PageRequest.of(offset, limit)).getContent();
         }
-        QCustomers customersDsl = QCustomers.customers;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(customersDsl.cpf.contains(cpf));
-        List<Customers> customers = (List<Customers>) customersRepository.findAll(builder);
+         List<Customers> customers = customersRepository.findAllByCpfStartingWith(cpf, PageRequest.of(offset, limit)).getContent();
+
         return customers;
     }
 

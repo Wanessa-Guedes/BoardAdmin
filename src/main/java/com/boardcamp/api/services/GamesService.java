@@ -10,6 +10,7 @@ import com.boardcamp.api.repository.CategoriesRepository;
 import com.boardcamp.api.repository.GamesRepository;
 import com.querydsl.core.BooleanBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,9 +25,9 @@ public class GamesService {
     @Autowired
     CategoriesRepository categoriesRepository;
 
-    public List<GamesDto> GetGames(String name){
+    public List<GamesDto> GetGames(String name, int offset, int limit){
     if(name == null) {
-        List<Games> games = gamesRepository.findAll();
+        List<Games> games = gamesRepository.findAll(PageRequest.of(offset, limit)).getContent();
         List<GamesDto> gamesDto = new ArrayList<>();
         games.forEach(game -> gamesDto.add(new GamesDto(game)));
         gamesDto.forEach(gameDto -> gameDto
@@ -35,10 +36,11 @@ public class GamesService {
                                 .getCategory_set_id())).get().getName())));
         return gamesDto;
     }
-        QGames gamesDsl = QGames.games;
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(gamesDsl.name.containsIgnoreCase(name));
-        List<Games> games = (List<Games>) gamesRepository.findAll(builder);
+//        QGames gamesDsl = QGames.games;
+//        BooleanBuilder builder = new BooleanBuilder();
+//        builder.and(gamesDsl.name.containsIgnoreCase(name));
+//        List<Games> games = (List<Games>) gamesRepository.findAll(builder);
+        List<Games> games = gamesRepository.findAllByNameIgnoreCaseStartingWith(name, PageRequest.of(offset, limit)).getContent();
         List<GamesDto> gamesDto = new ArrayList<>();
         games.forEach(game -> gamesDto.add(new GamesDto(game)));
         gamesDto.forEach(gameDto -> gameDto
